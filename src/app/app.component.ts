@@ -19,7 +19,25 @@ export class AppComponent implements OnInit{
   types: MyTypes[] = [];
 
 
+  async onDeleteType(index:number){
+    try{
+      await this.noteHTTPDbService.deleteType(index);
+      
+    }catch(err){
+      console.error(err);
+    }
+    this.getTypes();
+  }
 
+  async onAddType(type:MyTypes){
+    try{
+      await this.noteHTTPDbService.postType(type);
+      
+    }catch(err){
+      console.error(err);
+    }
+    this.getTypes();
+  }
    
   async onAddNote(note: MyCards){    
     try{

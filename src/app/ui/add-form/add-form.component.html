@@ -17,13 +17,29 @@
                     <option *ngFor="let type of types" [ngValue]="type.id"> {{type.name}}</option>
                 </select>
 
-                <ng-container *ngIf="!editType; else elseTemplate">
-                    <button class="btn btn-primary btn-sm" style="margin-left: 20px; "
-                        (click)="editType = true">Редактировать типы</button>
-                </ng-container>
-                <ng-template #elseTemplate>
-                    
-                </ng-template>
+                <form [formGroup]=typeForm>
+                    <ng-container *ngIf="!editType; else elseTemplate">
+                        <button class="btn btn-primary btn-sm ml-2 mb-3"
+                            (click)="editType = true"
+                            >Редактировать типы</button>
+                    </ng-container>
+                    <ng-template #elseTemplate>
+                        <input formControlName="name" type="text" [[(ngModel)]="typeName"> <button
+                            class="btn btn-primary btn-sm ml-2"  (click)="onAddType()"
+                            [disabled]="typeForm.invalid"
+                            >Добавить
+                            тип</button> 
+                            <button
+                            class="btn btn-primary btn-sm ml-2"  (click)="editType = false"
+                            >Вернуться</button>
+
+                        <div *ngFor="let type of types">
+                            <h5>{{type.name}}</h5> <button class="btn btn-primary btn-sm mb-1"
+                                (click) = "onDeleteType(type.id)"
+                                >Удалить</button>
+                        </div>
+                    </ng-template>
+                </form>
 
                 <p class="lead">
                     <button class="btn btn-primary btn-lg" role="button" (click)="onAddNote()"

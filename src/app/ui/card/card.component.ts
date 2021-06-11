@@ -11,6 +11,7 @@ import { NoteHTTPDbService } from 'src/app/shared/services/note-http-db.service'
 export class CardComponent implements OnInit {
   @Input() card!: MyCards;
   @Input() type: MyTypes ={id:0,name:""};
+  types: MyTypes[] = [];
   
   @Output() deleteCard =
   new EventEmitter<number>();
@@ -38,15 +39,25 @@ export class CardComponent implements OnInit {
       console.error(err);
     }
   }
+  async getTypes(){
+    try {
+      this.types = await this.noteHTTPDbService.getTypes();
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
 
   constructor(private fb: FormBuilder,private noteHTTPDbService :NoteHTTPDbService) { }
 
    ngOnInit(): void {
-    this.getTypeByID()
+    this.getTypeByID();
+    this.getTypes();
+
     const controls = {
       name: [null, [Validators.required, Validators.maxLength(100)]],
       inputText: [null, [Validators.required]],
+      type: [null, [Validators.required]],
     };
   
     this.cardForm = this.fb.group(controls);
