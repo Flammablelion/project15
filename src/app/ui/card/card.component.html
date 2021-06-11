@@ -1,0 +1,39 @@
+<ng-container *ngIf="!editActive; else elseTemplate">
+    <div class="card-body">
+        <h3>{{type.name}}</h3>
+        <h4 class="card-title">{{card.name}} <a style="font-size: 15px;"> {{card.date}} </a> </h4>
+
+        <p class="card-text">
+            {{card.inputText}}
+        </p>
+
+        <button type="button" class="btn btn-danger" (click)="onDeleteCard()">Удалить заметку</button>
+
+        <a class="btn btn-primary ml-2" (click)="editActive = true">Редактировать</a>
+        <p>
+            {{card.reDate}}
+        </p>
+
+    </div>
+</ng-container>
+<ng-template #elseTemplate>
+    <form [formGroup]="cardForm" (ngSubmit)="onSetEdit()">
+        <div class="container" *ngIf="editActive">
+            <input type="text" class="form-control ml-3 mb-2" placeholder="Название" aria-label=""
+                aria-describedby="basic-addon1" formControlName="name" [ngClass]="{
+                'invalid':
+                  cardForm.get('name')?.invalid
+              }">
+            <div class="col-12">
+                <textarea formControlName="inputText" 
+                [ngClass]="{
+                'invalid':
+                  cardForm.get('inputText')?.invalid
+              }"></textarea >
+                <button type="submit" class="btn btn-primary ml-2"
+                [disabled]="cardForm.invalid"
+                >Сохранить изменения</button>
+            </div>
+        </div>
+    </form>
+</ng-template>
